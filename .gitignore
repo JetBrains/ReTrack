@@ -63,3 +63,7 @@ _[Uu]pgrade[Rr]eport_[Ff]iles*/
 
 #directory for playground
 playground/
+
+# NuGet
+/packages/*
+src/packages/*

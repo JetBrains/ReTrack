@@ -3,43 +3,63 @@ using System.Collections.Generic;
 using System.Linq;
 using YouTrackSharp.Infrastructure;
 using YouTrackSharp.Issues;
+using YouTrackSharp.Projects;
 
 namespace ReTrack
 {
-  public class YouTrackProxy : IDisposable
-  {
-    private readonly IConnection connection;
-    private const int sensibleQueryLimit = 20;
-
-    public YouTrackProxy(ReTrackSettings s) : 
-      this(s.YouTrackUsername, s.YouTrackPassword, s.YouTrackHost, s.YouTrackPort, s.YouTrackUseSsl, s.YouTrackPath)
+    public class YouTrackProxy : IDisposable
     {
-      
-    }
+        private readonly IConnection connection;
+        private const int sensibleQueryLimit = 20;
 
-    public YouTrackProxy(string username, string password, string host, int port = 80, bool useSSL = false, 
-      string path = null)
-    {
-      connection = new Connection(host, port, useSSL, path);
-      connection.Authenticate(username, password);
-    }
+        public YouTrackProxy(ReTrackSettings s) :
+            this(s.YouTrackUsername, s.YouTrackPassword, new Uri(s.YouTrackUrl))
+        {
+        }
 
-    /// <summary>
-    /// Simple query, yields <c>ShortIssue</c> objects. Can drill down later if needed.
-    /// </summary>
-    /// <param name="s"></param>
-    /// <returns></returns>
-    public IList<ShortIssue> Query(string s)
-    {
-      var im = new IssueManagement(connection);
-      return im.GetIssuesBySearch(s, sensibleQueryLimit, 0)
-               .Select((dynamic i) => new ShortIssue(i.Id, i.summary))
-               .ToList();
-    }
+        public YouTrackProxy(string username, string password, Uri url)
+        {
+            connection = new Connection(url.Host, url.Port, url.Scheme == "https", url.PathAndQuery);
+            connection.Authenticate(username, password);
+        }
 
-    public void Dispose()
-    {
-      if (connection.IsAuthenticated) connection.Logout();
+        /// <summary>
+        /// Simple query, yields <c>ShortProject</c> objects. Can drill down later if needed.
+        /// </summary>
+        /// <param name="startsWith"></param>
+        /// <returns></returns>
+        public IList<ShortProject> Projects(string startsWith)
+        {
+            startsWith = startsWith.ToLowerInvariant();
+
+            var pm = new ProjectManagement(connection);
+            return pm.GetProjects().Where(p => p.Name.ToLowerInvariant().StartsWith(startsWith) || p.ShortName.ToLowerInvariant().StartsWith(startsWith))
+                .Select(p => new ShortProject(p.ShortName, p.Name))
+                .ToList();
+        }
+
+        /// <summary>
+        /// Simple query, yields <c>ShortIssue</c> objects. Can drill down later if needed.
+        /// </summary>
+        /// <param name="projectShortName"></param>
+        /// <param name="query"></param>
+        /// <returns></returns>
+        public IList<ShortIssue> Query(string projectShortName, string query)
+        {
+            var im = new IssueManagement(connection);
+            if (!string.IsNullOrEmpty(projectShortName))
+            {
+                query = string.Format("project: {0} {1}", projectShortName, query);
+            }
+
+            return im.GetIssuesBySearch(query, sensibleQueryLimit, 0)
+                .Select((dynamic i) => new ShortIssue(i.Id, i.summary))
+                .ToList(); 
+        }
+
+        public void Dispose()
+        {
+            if (connection.IsAuthenticated) connection.Logout();
+        }
     }
-  }
 }
