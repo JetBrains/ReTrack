@@ -9,6 +9,7 @@ using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
 using JetBrains.UI.Settings;
 using JetBrains.Application.Settings;
+using ReTrack.Engine;
 
 namespace ReTrack
 {
@@ -23,7 +24,7 @@ namespace ReTrack
         {
             InitializeComponent();
 
-            ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.YouTrackUsername, UsernameBox, TextBox.TextProperty);
+            ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.Username, UsernameBox, TextBox.TextProperty);
             ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.YouTrackPassword, PasswordBox, TextBox.TextProperty);
             ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.YouTrackUrl, UrlBox, TextBox.TextProperty);
         }
@@ -65,9 +66,9 @@ namespace ReTrack
             var errorMessage = "";
             if (!validator.TryValidateConnection(new ReTrackSettings
             {
-                YouTrackUsername = UsernameBox.Text,
-                YouTrackPassword = PasswordBox.Password,
-                YouTrackUrl = UrlBox.Text
+                Username = UsernameBox.Text,
+                Password = PasswordBox.Password,
+                Url = UrlBox.Text
             }, out errorMessage))
             {
                 MessageBox.Show(

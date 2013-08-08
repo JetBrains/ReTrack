@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using ReTrack.Engine;
 
 namespace ReTrack.Standalone
 {
@@ -18,9 +19,9 @@ namespace ReTrack.Standalone
 
             return new ReTrackSettings
             {
-                YouTrackUsername = GetAppSettingsValueOrDefault(configuration, "ReTrackSettings.YouTrackUsername", ""),
-                YouTrackPassword = GetAppSettingsValueOrDefault(configuration, "ReTrackSettings.YouTrackPassword", ""),
-                YouTrackUrl = GetAppSettingsValueOrDefault(configuration, "ReTrackSettings.YouTrackUrl", "")
+                Username = GetAppSettingsValueOrDefault(configuration, "ReTrackSettings.Username", ""),
+                Password = GetAppSettingsValueOrDefault(configuration, "ReTrackSettings.Password", ""),
+                Url = GetAppSettingsValueOrDefault(configuration, "ReTrackSettings.Url", "")
             };
         }
 
@@ -28,9 +29,9 @@ namespace ReTrack.Standalone
         {
             var configuration = ConfigurationManager.OpenExeConfiguration(_configurationFilePath);
 
-            SetAppSettingsValue(configuration, "ReTrackSettings.YouTrackUsername", settings.YouTrackUsername);
-            SetAppSettingsValue(configuration, "ReTrackSettings.YouTrackPassword", settings.YouTrackPassword);
-            SetAppSettingsValue(configuration, "ReTrackSettings.YouTrackUrl", settings.YouTrackUrl);
+            SetAppSettingsValue(configuration, "ReTrackSettings.Username", settings.Username);
+            SetAppSettingsValue(configuration, "ReTrackSettings.Password", settings.Password);
+            SetAppSettingsValue(configuration, "ReTrackSettings.Url", settings.Url);
 
             configuration.Save(ConfigurationSaveMode.Modified);
         }

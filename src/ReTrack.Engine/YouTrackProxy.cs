@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ReTrack.Engine.Models;
 using YouTrackSharp.Infrastructure;
 using YouTrackSharp.Issues;
 using YouTrackSharp.Projects;
 
-namespace ReTrack
+namespace ReTrack.Engine
 {
     public class YouTrackProxy : IDisposable
     {
@@ -13,7 +14,7 @@ namespace ReTrack
         private const int sensibleQueryLimit = 20;
 
         public YouTrackProxy(ReTrackSettings s) :
-            this(s.YouTrackUsername, s.YouTrackPassword, new Uri(s.YouTrackUrl))
+            this(s.Username, s.Password, new Uri(s.Url))
         {
         }
 

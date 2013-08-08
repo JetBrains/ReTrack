@@ -1,9 +1,9 @@
-﻿namespace ReTrack
+﻿namespace ReTrack.Engine
 {
     public class ReTrackSettings
     {
-        public string YouTrackUsername { get; set; }
-        public string YouTrackPassword { get; set; }
-        public string YouTrackUrl { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Url { get; set; }
     }
 }

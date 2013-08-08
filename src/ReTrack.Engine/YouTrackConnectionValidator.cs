@@ -2,7 +2,7 @@
 using System.Net;
 using System.Security.Authentication;
 
-namespace ReTrack
+namespace ReTrack.Engine
 {
     public class YouTrackConnectionValidator
     {

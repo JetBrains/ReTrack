@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Input;
-using ReTrack.Annotations;
+using ReTrack.Engine;
+using ReTrack.Engine.Models;
 
-namespace ReTrack
+namespace ReTrack.UI.Views.IssueBrowser
 {
-    using System.Windows.Controls;
-
-    /// <summary>
-    /// Interaction logic for YouTrackExplorerWindow.xaml
-    /// </summary>
-    public partial class YouTrackExplorerWindow : UserControl, INotifyPropertyChanged
+    public class IssueBrowserViewModel
+        : ViewModelBase
     {
         private string _currentProjectShortName;
         private string _currentQuery;
@@ -46,14 +40,12 @@ namespace ReTrack
             }
         }
 
-        public YouTrackExplorerWindow()
+        public IssueBrowserViewModel()
         {
             Projects = new ObservableCollection<ShortProject>();
             Issues = new ObservableCollection<ShortIssue>();
 
-            InitializeComponent();
-
-            // Refresh issue list when project changed
+            // Refresh issue list when project changed   
             PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "CurrentProjectShortName")
@@ -63,7 +55,7 @@ namespace ReTrack
             };
         }
 
-        public void InitializeViewModel(YouTrackProxy proxy)
+        public void Initialize(YouTrackProxy proxy)
         {
             Proxy = proxy;
             Projects.Clear();
@@ -77,47 +69,15 @@ namespace ReTrack
 
         protected void QueryForIssues()
         {
-            Task.Factory.StartNew(() => Proxy.Query(CurrentProjectShortName, CurrentQuery))
-                .ContinueWith(r =>
+            Task.Factory.StartNew(() => Proxy.Query(CurrentProjectShortName, CurrentQuery)).ContinueWith(
+                r =>
                 {
                     Application.Current.Dispatcher.Invoke(new Action(() => Issues.Clear()));
-
                     foreach (var issue in r.Result)
                     {
                         Application.Current.Dispatcher.Invoke(new Action(() => Issues.Add(issue)));
                     }
                 });
-        }
-
-        private void TbInput_OnPopulating(object sender, PopulatingEventArgs e)
-        {
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-        }
-
-        private void OnInputBoxKeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                var owner = (AutoCompleteBox) sender;
-                var s = owner.Text;
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void AutoCompleteBox_LostFocus(object sender, RoutedEventArgs e)
-        {
-            QueryForIssues();
         }
     }
 }

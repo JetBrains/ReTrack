@@ -1,4 +1,4 @@
-﻿namespace ReTrack
+﻿namespace ReTrack.Engine.Models
 {
     /// <summary>
     /// ID and summary - two things the user actually gets to see.

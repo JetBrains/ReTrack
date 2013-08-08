@@ -7,7 +7,7 @@
     <ProjectGuid>{330BD8C7-230C-4029-AE77-475F897192DA}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReTrack</RootNamespace>
+    <RootNamespace>ReTrack.Engine</RootNamespace>
     <AssemblyName>ReTrack.Engine</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -53,8 +53,8 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReTrackSettings.cs" />
-    <Compile Include="ShortIssue.cs" />
-    <Compile Include="ShortProject.cs" />
+    <Compile Include="Models\ShortIssue.cs" />
+    <Compile Include="Models\ShortProject.cs" />
     <Compile Include="YouTrackConnectionValidator.cs" />
     <Compile Include="YouTrackProxy.cs" />
   </ItemGroup>

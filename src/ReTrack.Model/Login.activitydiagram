@@ -32,20 +32,6 @@
       <body>Yes</body>
     </comment>
   </ownedCommentsInternal>
-  <profileInstances>
-    <packageHasProfileInstances Id="8c9a7b24-8a3f-4bfc-acd9-68eed73c77a9">
-      <profileInstance Id="dec07fdc-70bf-48ce-b0ae-970ab7e61ece" name="StandardProfileL2">
-        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
-      </profileInstance>
-      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
-    </packageHasProfileInstances>
-    <packageHasProfileInstances Id="9a80673a-dcca-4314-bf9a-ac7769597931">
-      <profileInstance Id="65cb3092-b799-4109-9669-36c3db0c698d" name="StandardProfileL3">
-        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
-      </profileInstance>
-      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
-    </packageHasProfileInstances>
-  </profileInstances>
   <packagedElements>
     <activityRootModelHasActivity>
       <activity Id="e3aac5f6-c3a0-46cf-8cae-b20c8aaefe93" name="Login" isAbstract="false" isLeaf="false" isActiveClass="false" isReentrant="false" isReadOnly="false" isSingleExecution="false">
@@ -122,5 +108,19 @@
   </packagedElements>
   <package Id="cc3f364e-eff4-4cc6-9261-d6db151e6759" name="ReTrack.Model">
     <elementDefinition Id="c44b13e7-c84d-4492-9536-86fcd4af8d7d" />
+    <profileInstances>
+      <packageHasProfileInstances Id="8c9a7b24-8a3f-4bfc-acd9-68eed73c77a9">
+        <profileInstance Id="dec07fdc-70bf-48ce-b0ae-970ab7e61ece" name="StandardProfileL2">
+          <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+        </profileInstance>
+        <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+      </packageHasProfileInstances>
+      <packageHasProfileInstances Id="9a80673a-dcca-4314-bf9a-ac7769597931">
+        <profileInstance Id="65cb3092-b799-4109-9669-36c3db0c698d" name="StandardProfileL3">
+          <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+        </profileInstance>
+        <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+      </packageHasProfileInstances>
+    </profileInstances>
   </package>
 </activityRootModel>
