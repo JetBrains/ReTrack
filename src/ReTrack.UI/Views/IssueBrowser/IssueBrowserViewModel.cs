@@ -1,9 +1,13 @@
 using System;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using ReTrack.Engine;
 using ReTrack.Engine.Models;
+using ReTrack.UI.Infrastructure;
+using ReTrack.UI.Views.Issue;
 
 namespace ReTrack.UI.Views.IssueBrowser
 {
@@ -14,6 +18,8 @@ namespace ReTrack.UI.Views.IssueBrowser
         private string _currentQuery;
 
         public YouTrackProxy Proxy { get; set; }
+
+        public ICommand DisplayIssueCommand { get; set; }
 
         public ObservableCollection<ShortProject> Projects { get; set; }
         public ObservableCollection<ShortIssue> Issues { get; set; }
@@ -45,10 +51,23 @@ namespace ReTrack.UI.Views.IssueBrowser
             Projects = new ObservableCollection<ShortProject>();
             Issues = new ObservableCollection<ShortIssue>();
 
+            DisplayIssueCommand = new DelegateCommand<string>(id =>
+            {
+                var page = new IssueView();
+                page.ViewModel.Initialize(Proxy, Issues.FirstOrDefault(i => i.ID == id));
+
+                var window = new Window();
+                window.Title = string.Format("View Issue {0}", id);
+                window.Content = page;
+                window.Width = 500;
+                window.Height = 500;
+                window.Show();
+            });
+
             // Refresh issue list when project changed   
             PropertyChanged += (sender, args) =>
             {
-                if (args.PropertyName == "CurrentProjectShortName")
+                if (args.PropertyName == "CurrentProjectShortName" || args.PropertyName == "CurrentQuery")
                 {
                     QueryForIssues();
                 }

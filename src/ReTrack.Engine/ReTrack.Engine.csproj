@@ -51,6 +51,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mappers\CommentToShortCommentMapper.cs" />
+    <Compile Include="Mappers\IMapper.cs" />
+    <Compile Include="Mappers\IssueToShortIssueMapper.cs" />
+    <Compile Include="Mappers\ProjectToShortProjectMapper.cs" />
+    <Compile Include="Models\ShortComment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReTrackSettings.cs" />
     <Compile Include="Models\ShortIssue.cs" />

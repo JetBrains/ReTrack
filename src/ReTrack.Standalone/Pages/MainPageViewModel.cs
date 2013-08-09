@@ -45,15 +45,14 @@ namespace ReTrack.Standalone.Pages
             retrackApp.Settings.Password = page.ViewModel.Password;
             retrackApp.Settings.Url = page.ViewModel.Url;
 
-            InitializeIssues();
+            InitializeViewFromSettings(retrackApp.Settings);
         }
 
-        private void InitializeIssues()
+        public void InitializeViewFromSettings(ReTrackSettings settings)
         {
-            var retrackApp = (App)Application.Current;
-            if (!string.IsNullOrEmpty(retrackApp.Settings.Url))
+            if (!string.IsNullOrEmpty(settings.Url))
             {
-                var proxy = new YouTrackProxy(retrackApp.Settings);
+                var proxy = new YouTrackProxy(settings);
 
                 IssueBrowserViewModel.Initialize(proxy);
             }

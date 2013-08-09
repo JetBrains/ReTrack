@@ -27,6 +27,9 @@ namespace ReTrack.Standalone.Pages
             InitializeComponent();
 
             ViewModel.IssueBrowserViewModel = IssueBrowser.ViewModel;
+
+            var retrackApp = (App)Application.Current;
+            ViewModel.InitializeViewFromSettings(retrackApp.Settings);
         }
 
         public MainPageViewModel ViewModel

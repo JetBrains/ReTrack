@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="ReTrack.UI.Views.Issue.IssueView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:WpfToolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
+             xmlns:issue="clr-namespace:ReTrack.UI.Views.Issue"    
+             mc:Ignorable="d"
+             d:DesignHeight="300" d:DesignWidth="300" x:Name="YtWindow">
+    <UserControl.Resources>
+        <DataTemplate x:Key="CommentListViewItemDataTemplate">
+            <Grid Margin="0,0,0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0" Text="{Binding Author}" FontSize="10"></TextBlock>
+                    <TextBlock Grid.Column="1" Text="{Binding Created}" FontSize="10" Margin="10,0"></TextBlock>
+                </Grid>
+
+                <Viewbox Grid.Row="1">
+                    <StackPanel Orientation="Vertical" Width="{Binding ActualWidth, ElementName=CommentsListView, Mode=OneWay}">
+                        <TextBlock Text="{Binding Text}" TextWrapping="Wrap"></TextBlock>
+                    </StackPanel>
+                </Viewbox>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <issue:IssueViewModel/>
+    </UserControl.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="6,6,6,6">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Text="{Binding Id}" FontSize="24" Margin="6,6,6,6" VerticalAlignment="Bottom"></TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding Summary}" Margin="6,6,6,10" FontSize="14"  VerticalAlignment="Bottom"></TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="6,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Column="0" Margin="6,0">Type:</TextBlock>
+            <TextBlock Grid.Column="1" Text="{Binding Type}" Margin="6,0"></TextBlock>
+
+            <TextBlock Grid.Column="2" Margin="6,0">Status:</TextBlock>
+            <TextBlock Grid.Column="3" Text="{Binding State}" Margin="6,0"></TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="6,6,6,6">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock Grid.Row="0" Margin="6,0">Comments:</TextBlock>
+            <StackPanel Grid.Row="1" Margin="6,0">
+                <ListView x:Name="CommentsListView" ItemsSource="{Binding Comments}"  ItemTemplate="{DynamicResource CommentListViewItemDataTemplate}"></ListView>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</UserControl>

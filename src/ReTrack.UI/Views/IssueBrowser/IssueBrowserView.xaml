@@ -3,25 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:issuebrowser="clr-namespace:ReTrack.UI.Views.IssueBrowser"
+             xmlns:WpfToolkit="http://schemas.microsoft.com/wpf/2008/toolkit"
+             xmlns:issuebrowser="clr-namespace:ReTrack.UI.Views.IssueBrowser"    
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="300" x:Name="YtWindow">
     <UserControl.DataContext>
         <issuebrowser:IssueBrowserViewModel/>
     </UserControl.DataContext>
-    <UserControl.Resources>
-        <DataTemplate x:Key="ShortIssueTemplate">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <TextBlock Grid.Column="0" Text="{Binding Path=ID, FallbackValue=XXXX-001}">XXXX-001</TextBlock>
-                <TextBlock Grid.Column="1" Text="{Binding Path=Summary, FallbackValue=Sample}">Sample issue</TextBlock>
-            </Grid>
-        </DataTemplate>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -39,11 +27,30 @@
                       ItemsSource="{Binding Path=Projects}" 
                       DisplayMemberPath="Name" 
                       SelectedValuePath="ShortName" 
-                      SelectedValue="{Binding Path=CurrentProjectShortName}" />
+                      SelectedValue="{Binding Path=CurrentProjectShortName, Mode=TwoWay}" />
+            
+            <TextBox Grid.Column="1" Text="{Binding CurrentQuery, Mode=TwoWay}"></TextBox>
         </Grid>
 
-        <DataGrid Grid.Row="1"
-                  ItemsSource="{Binding Path=Issues}"
-                  ItemTemplate="{DynamicResource ShortIssueTemplate}" />
+        <WpfToolkit:DataGrid Grid.Row="1"
+                  ItemsSource="{Binding Path=Issues, Mode=TwoWay}"
+                  HorizontalScrollBarVisibility="Auto" AutoGenerateColumns="False">
+            <WpfToolkit:DataGrid.Columns>
+                <WpfToolkit:DataGridTemplateColumn Header="Id">
+                    <WpfToolkit:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink Command="{Binding DataContext.DisplayIssueCommand, ElementName=YtWindow}" CommandParameter="{Binding ID}">
+                                     <TextBlock Text="{Binding ID}" />
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </WpfToolkit:DataGridTemplateColumn.CellTemplate>
+                </WpfToolkit:DataGridTemplateColumn>
+                <WpfToolkit:DataGridTextColumn Header="Type" Binding="{Binding Path=Type}" />
+                <WpfToolkit:DataGridTextColumn Header="State" Binding="{Binding Path=State}" />
+                <WpfToolkit:DataGridTextColumn Header="Summary" Binding="{Binding Path=Summary}" />
+            </WpfToolkit:DataGrid.Columns>
+        </WpfToolkit:DataGrid>
     </Grid>
 </UserControl>

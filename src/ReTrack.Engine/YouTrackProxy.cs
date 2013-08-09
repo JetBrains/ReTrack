@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using ReTrack.Engine.Mappers;
 using ReTrack.Engine.Models;
 using YouTrackSharp.Infrastructure;
 using YouTrackSharp.Issues;
@@ -11,11 +13,13 @@ namespace ReTrack.Engine
     public class YouTrackProxy : IDisposable
     {
         private readonly IConnection connection;
+        public string BaseUrl { get; set; }
         private const int sensibleQueryLimit = 20;
 
         public YouTrackProxy(ReTrackSettings s) :
             this(s.Username, s.Password, new Uri(s.Url))
         {
+            BaseUrl = s.Url;
         }
 
         public YouTrackProxy(string username, string password, Uri url)
@@ -34,8 +38,9 @@ namespace ReTrack.Engine
             startsWith = startsWith.ToLowerInvariant();
 
             var pm = new ProjectManagement(connection);
+            var mapper = new ProjectToShortProjectMapper();
             return pm.GetProjects().Where(p => p.Name.ToLowerInvariant().StartsWith(startsWith) || p.ShortName.ToLowerInvariant().StartsWith(startsWith))
-                .Select(p => new ShortProject(p.ShortName, p.Name))
+                .Select(mapper.Map)
                 .ToList();
         }
 
@@ -53,9 +58,25 @@ namespace ReTrack.Engine
                 query = string.Format("project: {0} {1}", projectShortName, query);
             }
 
+            var mapper = new IssueToShortIssueMapper(BaseUrl);
             return im.GetIssuesBySearch(query, sensibleQueryLimit, 0)
-                .Select((dynamic i) => new ShortIssue(i.Id, i.summary))
-                .ToList(); 
+                .Select(mapper.Map)
+                .ToList();
+        }
+
+        /// <summary>
+        /// Simple query, yields <c>ShortComment</c> objects.
+        /// </summary>
+        /// <param name="issueId"></param>
+        /// <returns></returns>
+        public IList<ShortComment> QueryComments(string issueId)
+        {
+            var im = new IssueManagement(connection);
+
+            var mapper = new CommentToShortCommentMapper();
+            return im.GetCommentsForIssue(issueId)
+                .Select(mapper.Map)
+                .ToList();
         }
 
         public void Dispose()
