@@ -1,21 +1,17 @@
 ﻿using System;
-using System.Net;
-using System.Security.Authentication;
 using System.Windows;
 using System.Windows.Controls;
 using JetBrains.DataFlow;
 using JetBrains.ReSharper.Features.Common.Options;
 using JetBrains.UI.CrossFramework;
 using JetBrains.UI.Options;
-using JetBrains.UI.Settings;
 using JetBrains.Application.Settings;
 using ReTrack.Engine;
+using ReTrack.Resources;
 
 namespace ReTrack
 {
-    [OptionsPage(PID, "ReTrack",
-        typeof (IconsForDefaultSettingsStorages),
-        ParentId = ToolsPage.PID)]
+    [OptionsPage(PID, "ReTrack", typeof(ReTrackThemedIcons.YouTrack), ParentId = ToolsPage.PID)]
     public partial class ReTrackOptionsPage : UserControl, IOptionsPage
     {
         private const string PID = "ReTrack.OptionsPage";
@@ -24,7 +20,7 @@ namespace ReTrack
         {
             InitializeComponent();
 
-            ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.Username, UsernameBox, TextBox.TextProperty);
+            ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.YouTrackUsername, UsernameBox, TextBox.TextProperty);
             ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.YouTrackPassword, PasswordBox, TextBox.TextProperty);
             ctx.SetBinding(lifetime, (ReTrackSettingsReSharper s) => s.YouTrackUrl, UrlBox, TextBox.TextProperty);
         }
@@ -52,9 +48,9 @@ namespace ReTrack
 
         private void UrlBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (UrlBox.Text.ToLowerInvariant().Contains(".myjetbrains.com") &&
-                !(UrlBox.Text.ToLowerInvariant().EndsWith("/youtrack") ||
-                  UrlBox.Text.ToLowerInvariant().EndsWith("/youtrack/")))
+            if (UrlBox.Text.IndexOf(".myjetbrains.com", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                !(UrlBox.Text.EndsWith("/youtrack", StringComparison.OrdinalIgnoreCase) ||
+                  UrlBox.Text.EndsWith("/youtrack/", StringComparison.OrdinalIgnoreCase)))
             {
                 UrlBox.Text += "/youtrack";
             }

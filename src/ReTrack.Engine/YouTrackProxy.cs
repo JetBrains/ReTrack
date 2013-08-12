@@ -24,7 +24,7 @@ namespace ReTrack.Engine
 
         public YouTrackProxy(string username, string password, Uri url)
         {
-            connection = new Connection(url.Host, url.Port, url.Scheme == "https", url.PathAndQuery);
+            connection = new Connection(url.Host, url.Port, url.Scheme == Uri.UriSchemeHttps, url.GetComponents(UriComponents.Path, UriFormat.UriEscaped).TrimEnd('/'));
             connection.Authenticate(username, password);
         }
 
@@ -39,7 +39,7 @@ namespace ReTrack.Engine
 
             var pm = new ProjectManagement(connection);
             var mapper = new ProjectToShortProjectMapper();
-            return pm.GetProjects().Where(p => p.Name.ToLowerInvariant().StartsWith(startsWith) || p.ShortName.ToLowerInvariant().StartsWith(startsWith))
+            return pm.GetProjects().Where(p => p.Name.StartsWith(startsWith, StringComparison.InvariantCultureIgnoreCase) || p.ShortName.StartsWith(startsWith, StringComparison.InvariantCultureIgnoreCase))
                 .Select(mapper.Map)
                 .ToList();
         }

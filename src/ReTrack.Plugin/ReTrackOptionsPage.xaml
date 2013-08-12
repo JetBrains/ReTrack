@@ -18,7 +18,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right">Password:</TextBlock>
+        <TextBlock Grid.Row="0" Grid.Column="0" TextAlignment="Right">Username:</TextBlock>
         <TextBox Grid.Row="0" Grid.Column="1" Name="UsernameBox" />
         <TextBlock Grid.Row="1" Grid.Column="0" TextAlignment="Right">Password:</TextBlock>
         <PasswordBox Grid.Row="1" Grid.Column="1" Name="PasswordBox"/>

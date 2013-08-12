@@ -3,7 +3,7 @@
 <actions>
   <insert group-id="ReSharper" position="last">
     <action-group id="ReTrack" text="ReTrack">
-      <action id="ReSharper.ReSharper_GoToIssue" text="Go to Issue..."/>
+      <action id="ReTrack.GoToIssue" text="Go to Issue..."/>
     </action-group>
   </insert>
 </actions>
